@@ -79,7 +79,7 @@ describe('Testa endpoints do produto', () => {
       const resultCreated = await productsModel.create(payloadProduct);
       await productsModel.remove(resultCreated._id);
       const resultProductById = await productsModel.getById(resultCreated._id);
-
+      
       expect(resultProductById).to.be.equal(null);
     });
   });
