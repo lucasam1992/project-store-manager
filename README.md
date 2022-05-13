@@ -1,55 +1,7 @@
-### Termos e acordos
-
-Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe
-
 # Boas vindas ao repositório do projeto Store Manager!
 
-Você já usa o GitHub diariamente para desenvolver os exercícios, certo? Agora, para desenvolver os projetos, você deverá seguir as instruções a seguir. Fique atento a cada passo, e se tiver qualquer dúvida, nos envie por Slack! #vqv 🚀
+Ainda não está pronto o README.
 
-Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu projeto a partir deste repositório, utilizando uma branch específica e um Pull Request para colocar seus códigos.
-
----
-
-# Sumário
-
-- [Habilidades](#habilidades)
-- [Entregáveis](#entregáveis)
-  - [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
-  - [Desenvolvimento](#desenvolvimento)
-  - [Data de entrega](#data-de-entrega)
-- [Instruções para entregar seu projeto](#instruções-para-entregar-seu-projeto)
-  - [Antes de começar a desenvolver](#antes-de-começar-a-desenvolver)
-  - [Durante o desenvolvimento](#durante-o-desenvolvimento)
-- [Como desenvolver](#como-desenvolver)
-  - [Padrões e conexões](#padrões-e-conexões)
-  - [Conexão com o Banco](#conexão-com-o-banco)
-  - [Tabelas](#tabelas)
-- [Requisitos do projeto](#requisitos-do-projeto)
-  - [Linter](#linter)
-  - [Lista de requisitos](#lista-de-requisitos)
-
-    `Obrigatórios`
-    - [1 - Crie um endpoint para o cadastro de produtos](#1---crie-um-endpoint-para-o-cadastro-de-produtos)
-    - [2 - Crie um endpoint para listar os produtos](#2---crie-um-endpoint-para-listar-os-produtos)
-    - [3 - Crie um endpoint para atualizar um produto](#3---crie-um-endpoint-para-atualizar-um-produto)
-    - [4 - Crie um endpoint para deletar um produto](#4---crie-um-endpoint-para-deletar-um-produto)
-    - [5 - Crie um endpoint para cadastrar vendas](#5---crie-um-endpoint-para-cadastrar-vendas)
-    - [6 - Crie um endpoint para listar as vendas](#6---crie-um-endpoint-para-listar-as-vendas)
-    - [7 - Crie um endpoint para atualizar uma venda](#7---crie-um-endpoint-para-atualizar-uma-venda)
-    - [8 - Crie um endpoint para deletar uma venda](#8---crie-um-endpoint-para-deletar-uma-venda)
-    - [9 - Atualize a quantidade de produtos](#9---atualize-a-quantidade-de-produtos)
-    - [10 - Valide a quantidade de produtos](#10---valide-a-quantidade-de-produtos)
-
-    `Bônus`
-    
-    - [11 - Escreva testes para seus models](#11---escreva-testes-para-seus-models)
-    - [12 - Escreva testes para seus services](#12---escreva-testes-para-seus-services)
-    - [13 - Escreva testes para seus controllers](#13---escreva-testes-para-seus-controllers)
-- [Depois de terminar o desenvolvimento](#depois-de-terminar-o-desenvolvimento)
-- [Revisando um pull request](#revisando-um-pull-request)
-- [Avisos Finais](#avisos-finais)
-
----
 
 # Habilidades
 
@@ -64,14 +16,6 @@ Nesse projeto, você será capaz de:
 - Entender e aplicar os padrões REST;
 - Escrever assinaturas para APIs intuitivas e facilmente entendíveis.
 
-# Entregáveis
-
-Para entregar o seu projeto você deverá criar um Pull Request neste repositório.
-
-Lembre-se que você pode consultar nosso conteúdo sobre
-[Git & GitHub](https://course.betrybe.com/intro/git/) sempre que precisar!
-
----
 
 ## O que deverá ser desenvolvido
 
@@ -110,84 +54,9 @@ Você deve utilizar o banco MongoDB para a gestão de dados. Além disso, a API 
 
 ---
 
-## Data de Entrega
 
-  - Serão `3` dias de projeto.
-  - Data de entrega para avaliação final do projeto: `21/09/2021 - 14:00h`.
 
----
 
-# Instruções para entregar seu projeto
-
-## Antes de começar a desenvolver
-
-1. Clone o repositório
-
-- `git clone https://github.com/tryber/sd-010-a-store-manager.git`.
-- Entre na pasta do repositório que você acabou de clonar:
-  - `cd sd-010-a-store-manager`
-
-2. Instale as dependências [**Caso existam**]
-
-- `npm install`
-
-Atenção :warning: Não rode o comando npm audit fix! Ele atualiza várias dependências do projeto, e essa atualização gera conflitos com o avaliador.
-
-3. Crie uma branch a partir da branch `master`
-
-- Verifique que você está na branch `master`
-  - Exemplo: `git branch`
-- Se não estiver, mude para a branch `master`
-  - Exemplo: `git checkout master`
-- Agora crie uma branch à qual você vai submeter os `commits` do seu projeto
-  - Você deve criar uma branch no seguinte formato: `nome-de-usuario-nome-do-projeto`
-  - Exemplo: `git checkout -b joaozinho-sd-010-a-store-manager`
-
-4. Adicione as mudanças ao _stage_ do Git e faça um `commit`
-
-- Verifique que as mudanças ainda não estão no _stage_
-  - Exemplo: `git status` (deve aparecer listada a pasta _joaozinho_ em vermelho)
-- Adicione o novo arquivo ao _stage_ do Git
-  - Exemplo:
-    - `git add .` (adicionando todas as mudanças - _que estavam em vermelho_ - ao stage do Git)
-    - `git status` (deve aparecer listado o arquivo _joaozinho/README.md_ em verde)
-- Faça o `commit` inicial
-  - Exemplo:
-    - `git commit -m 'iniciando o projeto x'` (fazendo o primeiro commit)
-    - `git status` (deve aparecer uma mensagem tipo _nothing to commit_ )
-
-5. Adicione a sua branch com o novo `commit` ao repositório remoto
-
-- Usando o exemplo anterior: `git push -u origin joaozinho-sd-010-a-store-manager`
-
-6. Crie um novo `Pull Request` _(PR)_
-
-- Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/sd-010-a-store-manager/pulls)
-- Clique no botão verde _"New pull request"_
-- Clique na caixa de seleção _"Compare"_ e escolha a sua branch **com atenção**
-- Clique no botão verde _"Create pull request"_
-- Adicione uma descrição para o _Pull Request_ e clique no botão verde _"Create pull request"_
-- **Não se preocupe em preencher mais nada por enquanto!**
-- Volte até a [página de _Pull Requests_ do repositório](https://github.com/tryber/sd-010-a-store-manager/pulls) e confira que o seu _Pull Request_ está criado
-
----
-
-## Durante o desenvolvimento
-
-* ⚠ **PULL REQUESTS COM ISSUES NO LINTER NÃO SERÃO AVALIADAS, ATENTE-SE PARA RESOLVÊ-LAS ANTES DE FINALIZAR O DESENVOLVIMENTO!** ⚠
-
-* Faça `commits` das alterações que você fizer no código regularmente
-
-* Lembre-se de sempre após um (ou alguns) `commits` atualizar o repositório remoto
-
-* Os comandos que você utilizará com mais frequência são:
-  1. `git status` _(para verificar o que está em vermelho - fora do stage - e o que está em verde - no stage)_
-  2. `git add` _(para adicionar arquivos ao stage do Git)_
-  3. `git commit` _(para criar um commit com os arquivos que estão no stage do Git)_
-  5. `git push -u nome-da-branch` _(para enviar o commit para o repositório remoto na primeira vez que fizer o `push` de uma nova branch)_
-  4. `git push` _(para enviar o commit para o repositório remoto após o passo anterior)_
-
----
 
 # Como desenvolver
 
