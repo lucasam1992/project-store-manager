@@ -4,11 +4,21 @@ O projeto consiste em uma API que realiza um CRUD (Create, Read, Update e Delete
 
 ## Banco de Dados do Projeto
 
- O banco de dados possui duas tabelas `products` e `sales`: <br />
- A tabela `products` contém os atributos {"_id": ObjectId("5f43cbf4c45ff5104986e81d"), "name": "Produto Silva", "quantity": 10 }; <br />
+ O banco de dados possui duas tabelas `products` e `sales`<br />
  
- A tabela `sales` contém os atributos {"_id": ObjectId("5f43cc53c45ff5104986e81e"),
-  "itensSold": [{ "productId": "5f43cbf4c45ff5104986e81d", "quantity": 2 }]};
+ A tabela `products` contém os seguinte atributos:
+  
+  {
+    "_id": ObjectId("5f43cbf4c45ff5104986e81d"), 
+    "name": "Produto Silva", "quantity": 10 
+  }; <br />
+ 
+ A tabela `sales` contém os seguitnes atributos: 
+  
+  {
+   "_id": ObjectId("5f43cc53c45ff5104986e81e"),
+   "itensSold": [{ "productId": "5f43cbf4c45ff5104986e81d", "quantity": 2 }]
+  };
 
 ## Tecnologias Usadas
 
