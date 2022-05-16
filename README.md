@@ -27,7 +27,7 @@ O projeto consiste em uma API que realiza um CRUD (Create, Read, Update e Delete
 - Javascript
 - MongoDB
 - Mochajs
-- Chai
+- Chaijs
 
 ## O que foi Desenvolvido
 
@@ -35,33 +35,11 @@ O projeto consiste em uma API que realiza um CRUD (Create, Read, Update e Delete
 
 ![Criar produtos](./public/criarProdutos.png)
 
-### 2 - Crie um endpoint para listar os produtos
-
-- O endpoint deve ser acessível através do caminho (`/products`) ou (`/products/:id`);
-
-- Através do caminho `/products`, todos os produtos devem ser retornados;
-
-- Através do caminho `/products/:id`, apenas o produto com o `id` presente na URL deve ser retornado;
-
-**O que será verificado:**
-
-- Será validado que todos produtos estão sendo retornados
-
-  - Se a lista retornar com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
+### 2 - Criação dos endpoints GET `/products` e `/products/:id`
 
 ![Lista de produtos](./public/listadeprodutos.png)
 
-- Será validado que é possível listar um determinado produto
-
-  - Se a lista retornar com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
-
 ![Listar um produto](./public/produtoespecifico.png)
-
-- Será validado que não é possível listar um produto que não existe
-
-  - Se a lista retornar com falha, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Produto não existe](./public/produtonaoexiste.png)
 
 ### 3 - Crie um endpoint para atualizar um produto
 
