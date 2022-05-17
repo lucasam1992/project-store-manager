@@ -1,9 +1,8 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 const { MongoClient } = require('mongodb');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+const { getConnection } = require('./connectionMock');
 
-const mongoConnection = require('../../models/connection');
 const salesModel = require('../../models/salesModel');
 const productsModel = require('../../models/productsModel');
 
@@ -13,20 +12,13 @@ const productsModel = require('../../models/productsModel');
 let connectionMock;
 
 before(async () => {
-  const DBServer = new MongoMemoryServer();
-  const URLMock = await DBServer.getUri();
-  connectionMock = await MongoClient.connect(
-    URLMock,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
-  connectionMock = connectionMock.db('StoreManager');
-  sinon.stub(mongoConnection, 'getConnection').resolves(connectionMock);
+  connectionMock = await getConnection();
+  sinon.stub(MongoClient, 'connect').resolves(connectionMock);
 });
 
 after(() => {
-  mongoConnection.getConnection.restore();
+  MongoClient.connect.restore();
 });
-
 
 const payloadProduct = {
   name: 'Produto Silva',
@@ -40,7 +32,7 @@ describe('Testa endpoints do produto', () => {
 
         expect(result).to.be.a('object');
     });
-    it('verificar se existem os atributos _id, name e quantity', async () =>{
+    it('verificar se existem os atributos _id, name e quantity', async () => {
         const result = await productsModel.create(payloadProduct);
 
         expect(result).to.have.a.property('_id');
@@ -51,7 +43,7 @@ describe('Testa endpoints do produto', () => {
   describe('Testa se está pesquisando por id do produto', () => {
     it('retorna um objeto', async () => {
         const { _id: id } = await productsModel.create(payloadProduct);
-        const result = await productsModel.getById(_id);
+        const result = await productsModel.getById(id);
 
         expect(result).to.be.a('object');
     });
@@ -67,14 +59,13 @@ describe('Testa endpoints do produto', () => {
   describe('Testa se está atualizando os produtos', () => {
     it('retorna objeto atualizado', async () => {
       const { _id: id } = await productsModel.create(payloadProduct);
-      const payloadProductUpdate = [{ 'name': 'Produto Juracy', 'quantity': 25 }];
       
-      await productsModel.update(id, payloadProductUpdate);
+      await productsModel.update(id, 'Produto Juracy', 25);
       
-      const { name, quantity } = await productsModel.getById(id);
+      const result = await productsModel.getById(id);
 
-      expect(name).to.be.equal('Produto Juracy');
-      expect(quantity).to.be.equal(25);
+      expect(result.name).to.be.equal('Produto Juracy');
+      expect(result.quantity).to.be.equal(25);
     });
   });
   
@@ -82,6 +73,7 @@ describe('Testa endpoints do produto', () => {
     it('retorna vazio caso tenha sido removido da lista', async () => {
       const { _id: id} = await productsModel.create(payloadProduct);
       await productsModel.remove(id);
+      
       const resultProductById = await productsModel.getById(id);
       
       expect(resultProductById).to.be.equal(null);
@@ -96,14 +88,14 @@ describe('Testa endpoints do sale', () => {
   describe('Testa se está inserindo com sucesso', () => {
     it('retorna um objeto', async () => {
         const { _id: id } = await productsModel.create(payloadProduct);
-        const payloadSale = [{'productId': id,'quantity': 3}]
+        const payloadSale = [{ productId: id, quantity: 3}]
         const result = await salesModel.create(payloadSale);
         
         expect(result).to.be.a('object');
     });
     it('verificar se existem os atributos _id, e itensSold', async () =>{
         const { _id: id} = await productsModel.create(payloadProduct);
-        const payloadSale = [{'productId': id,'quantity': 3}];
+        const payloadSale = [{ productId: id, quantity: 3}];
         const result = await salesModel.create(payloadSale);
 
         expect(result).to.have.a.property('_id');
@@ -113,11 +105,20 @@ describe('Testa endpoints do sale', () => {
   describe('Testa se está pesquisando por id', () => {
     it('retorna um objeto', async () => {
       const { _id: id } = await productsModel.create(payloadProduct);
-      const payloadSale = [{'productId': id,'quantity': 3}];
+      const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);
       const result = await salesModel.getById(saleId);
 
       expect(result).to.be.a('object');
+    });
+    it('verificar se existem os atributos _id, e itensSold', async () => {
+      const { _id: id } = await productsModel.create(payloadProduct);
+      const payloadSale = [{ productId: id, quantity: 3}];
+      const { _id: saleId } = await salesModel.create(payloadSale);
+      const result = await salesModel.getById(saleId);
+
+      expect(result).to.have.a.property('_id');
+      expect(result).to.have.a.property('itensSold');
     });
   });
   describe('Testa se está pesquisando por todos os sales', () => {
@@ -132,15 +133,15 @@ describe('Testa endpoints do sale', () => {
       // Criando product
       const { _id: id} = await productsModel.create(payloadProduct);
       // Criando Sale
-      const payloadSale = [{'productId': id,'quantity': 3}];
+      const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);
       // Fazendo alteração no sale
-      const payloadSaleUpdated = [{'productId': id, 'quantity': 25}];
+      const payloadSaleUpdated = [{ productId: id, quantity: 25}];
       const resultUpdated = await salesModel.update(saleId, payloadSaleUpdated);
 
-      const { quantity } = await salesModel.getById(saleId);
+      const { itensSold } = await salesModel.getById(saleId);
       
-      expect(quantity).to.be.equal(25);
+      expect(itensSold[0].quantity).to.be.equal(25);
     });
   });
   describe('Testa se está removendo os sales', () => {
@@ -148,7 +149,7 @@ describe('Testa endpoints do sale', () => {
       // Criando product
       const { _id: id} = await productsModel.create(payloadProduct);
       // Criando Sale
-      const payloadSale = [{'productId': id,'quantity': 3}];
+      const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);
       await salesModel.remove(saleId);
 
