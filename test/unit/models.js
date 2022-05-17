@@ -25,7 +25,7 @@ const payloadProduct = {
   quantity: 10,
 }
 
-describe('Testa endpoints do produto', () => {
+describe('Testa endpoints do produto na camada model', () => {
   describe('Testa se está inserindo com sucesso', () => {
     it('retorna um objeto', async () => {
         const result = await productsModel.create(payloadProduct);
@@ -58,14 +58,14 @@ describe('Testa endpoints do produto', () => {
   
   describe('Testa se está atualizando os produtos', () => {
     it('retorna objeto atualizado', async () => {
-      const { _id: id } = await productsModel.create(payloadProduct);
+       const { _id: id } = await productsModel.create(payloadProduct);
       
-      await productsModel.update(id, 'Produto Juracy', 25);
+       await productsModel.update(id, 'Produto Juracy', 25);
       
-      const result = await productsModel.getById(id);
+       const result = await productsModel.getById(id);
 
-      expect(result.name).to.be.equal('Produto Juracy');
-      expect(result.quantity).to.be.equal(25);
+       expect(result.name).to.be.equal('Produto Juracy');
+       expect(result.quantity).to.be.equal(25);
     });
   });
   
@@ -84,7 +84,7 @@ describe('Testa endpoints do produto', () => {
 
 // Validando Sale
 
-describe('Testa endpoints do sale', () => {
+describe('Testa endpoints das vendas na camada model', () => {
   describe('Testa se está inserindo com sucesso', () => {
     it('retorna um objeto', async () => {
         const { _id: id } = await productsModel.create(payloadProduct);
