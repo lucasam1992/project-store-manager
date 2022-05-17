@@ -28,6 +28,7 @@ O projeto consiste em uma API que realiza um CRUD (Create, Read, Update e Delete
 - MongoDB
 - Mochajs
 - Chaijs
+- Sinonjs
 
 ## O que foi Desenvolvido
 
@@ -41,295 +42,59 @@ O projeto consiste em uma API que realiza um CRUD (Create, Read, Update e Delete
 
 ![Listar um produto](./public/produtoespecifico.png)
 
-### 3 - Crie um endpoint para atualizar um produto
-
-- O endpoint deve ser acessível através do caminho (`/products/:id`);
-
-- O corpo da requisição deve seguir a mesma estrutura do método responsável por adicionar um produto;
-
-- Apenas o produto com o `id` presente na URL deve ser atualizado;
-
-**O que será verificado:**
-
-- Será validado que não é possível atualizar um produto com o nome menor que 5 caracteres
-
-  - Se o produto tiver o nome menor que cinco caracteres, o resultado retornado deverá ser conforme exibido abaixo, com status `422`:
-
-![Atualizar com nome menor que cinco](./public/atualizarcomnomemenorque5.png)
-(As contrabarras `\` estão escapando as aspas de dentro da string)
-
-- Será validado que não é possível atualizar um produto com quantidade menor que zero
-
-  - Se o produto tiver o quantidade menor que zero, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Atualizar menor que zero](./public/atualizarmenorque0.png)
-(As contrabarras `\` estão escapando as aspas de dentro da string)
-
-- Será validado que não é possível atualizar um produto com quantidade igual a zero
-
-  - Se o produto tiver o quantidade igual a zero, o resultado mostrado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Atualizar igual a zero](./public/atualizarigual0.png)
-(As contrabarras `\` estão escapando as aspas de dentro da string)
-
-- Será validado que não é possível atualizar um produto com uma string no campo quantidade
-
-  - Se o produto tiver o quantidade como string, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Atualizar com string](./public/atualizarcomostring.png)
-(As contrabarras `\` estão escapando as aspas de dentro da string)
-
-- Será validado que é possível atualizar um produto com sucesso]**
-
-  - Se o produto atualizado com sucesso, o resultado mostrretornadoado deverá ser conforme exibido abaixo, com status http `200`:
+### 3 - Criação do endpoint PUT `/products/:id`
 
 ![Atualizado com sucesso](./public/atualizarcomsucesso.png)
 
-### 4 - Crie um endpoint para deletar um produto
-
-- O endpoint deve ser acessível através do caminho (`/products/:id`);
-
-- Apenas o produto com o `id` presente na URL deve ser deletado;
-
-**O que será verificado:**
-
-- Será validado que é possível deletar um produto com sucesso
-
-  - Se o produto deletado com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
+### 4 - Criação do endpoint DELETE `/products/:id`
 
 ![Deletar um produto](./public/deletarumproduto.png)
 
-- Será validado que não é possível deletar um produto que não existe
-
-  - Se o produto não for deletado com sucesso, o resultado retornado deverá ser esse e com status http `422`:
-
-![Deletar um produto que não existe](./public/deletarumprodutoquenaoexiste.png)
-
-### 5 - Crie um endpoint para cadastrar vendas
-
-- O endpoint deve ser acessível através do caminho (`/sales`);
-
-- As vendas enviadas devem ser salvas em uma `collection` do MongoDB;
-
-- Deve ser possível cadastrar a venda de vários produtos através da uma mesma requisição;
-
-- O endpoint deve receber a seguinte estrutura:
-
-```json
-[
-  {
-  "productId": "product_id",
-  "quantity": "product_quantity",
-  },
-  ...
-]
-```
-
-O retorno de uma venda cadastrada com sucesso deverá ser:
-
-```json
-{
-  "_id": "5f43ba333200020b101fe4a0",
-  "itensSold": [
-    {
-      "productId": "5f43ba273200020b101fe49f",
-      "quantity": 2
-    }
-  ]
-}
-```
-
-#### Observações Técnicas:
-
-- O `productId` devem ser igual ao `id` de um produto anteriormente cadastrado;
-
-- `quantity` deve ser um número inteiro maior que 0;
-
-- Cada venda deve ter um id que seja único e gerado no momento em que o recurso for criado;
-
-- A resposta do endpoint em caso de sucesso deve ser a(s) venda(s) criada(s).
-
-**O que será verificado:**
-
-- Será validado que não é possível cadastrar vendas com quantidade menor que zero
-
-  - Se a venda tiver uma quantidade menor que zero, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Vendas menor que zero](./public/comprasmenorquezero.png)
-
-- Será validado que não é possível cadastrar vendas com quantidade igual a zero
-
-  - Se a venda tiver uma quantidade igual a zero, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Vendas igual a zero](./public/comprasigualazero.png)
-
-- Será validado que não é possível cadastrar vendas com uma string no campo quantidade
-
-  - Se a venda tiver uma quantidade com valor, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Vendas com string](./public/comprascomstring.png)
-
-- Será validado que é possível criar uma venda com sucesso
-
-  - Se a venda foi feita com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
+### 5 - Criação do endpoint POST `/sales`
 
 ![Cadastro de venda com sucesso](./public/cadastrodevendacomsucesso.png)
 
-- Será validado que é possível criar várias vendas com sucesso
-
-  - Se as vendas foi feita com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
-
 ![Cadastrar varias compras](./public/variascompras.png)
 
-### 6 - Crie um endpoint para listar as vendas
-
-- O endpoint deve ser acessível através do caminho (`/sales`) ou (`/sales/:id`);
-
-- Através do caminho `/sales`, todas as vendas devem ser retornadas;
-
-- Através do caminho `/sales/:id`, apenas a venda com o `id` presente na URL deve ser retornada;
-
-**O que será verificado:**
-
-- Será validado que todas as vendas estão sendo retornadas
-
-  - Se todas vendas estão sendo listadas, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
+### 6 - Criação dos endpoints GET `/sales` e `/sales/:id`
 
 ![Listar todas as vendas](./public/todasvendas.png)
 
-- Será validado que é possível listar uma determinada venda
-
- - Se a venda esta sendo listada, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
-
 ![Listar uma venda](./public/listaumavenda.png)
 
-- Será validado que não é possível listar uma venda inexistente
-
-  - Se a venda não esta sendo listada, o resultado retornado deverá ser conforme exibido abaixo, com status http `404`:
-
-![Listar uma venda que não existe](./public/vendanaoexiste.png)
-
-### 7 - Crie um endpoint para atualizar uma venda
-
-- O endpoint deve ser acessível através do caminho (`/sales/:id`);
-
-- O corpo da requisição deve receber a seguinte estrutura:
-
-```json
-[
-  {
-    "productId": "5f3ff849d94d4a17da707008",
-    "quantity": 3
-  }
-]
-```
-
-- `quantity` deve ser um número inteiro maior que 0;
-
-- Apenas a venda com o `id` presente na URL deve ser atualizada;
-
-**O que será verificado:**
-
-- Será validado que não é possível atualizar vendas com quantidade menor que zero
-
-  - Se a venda tiver uma quantidade menor que zero, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Atualizar venda menor que zero](./public/atualizarvendamenorquezero.png)
-
-- Será validado que não é possível atualizar vendas com quantidade igual a zero
-
-  - Se a venda tiver uma quantidade igual a zero, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Atualizar venda igual zero](./public/atualizarvendaigualzero.png)
-
-- Será validado que não é possível atualizar vendas com uma string no campo quantidade
-
-  - Se a venda tiver uma quantidade do tipo string, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
-
-![Atualizar venda com string](./public/atualizarvendacomstring.png)
-
-- Será validado que é possível atualizar uma vendas com sucesso
-
-  - Se a venda for atualizada com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
+### 7 - Criação do endpoint PUT `/sales/:id`
 
 ![Atualizar uma venda com sucesso](./public/atualizarvendacomsucesso.png)
 
-### 8 - Crie um endpoint para deletar uma venda
-
-- O endpoint deve ser acessível através do caminho (`/sales/:id`);
-
-- Apenas a venda com o `id` presente na URL deve ser deletado;
-
-**O que será verificado:**
-
-- Será validado que é possível deletar uma venda com sucesso
-
-  - Se a venda foi deletada sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200` e será verificado depois que a venda não existe, com um GET nesse `id`, e este deverá retornar status http `404`, como é validado no requisito 6:
+### 8 - Criação do endpoint DELETE `/sales/:id`
 
 ![Deletar uma venda com sucesso](./public/deletarumavendacomsucesso.png)
 
-- Será validado que não é possível deletar uma venda que não existe
+## O que está em desenvolvimento
 
-  - Se a venda não foi deletada sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `422`:
+### 11 - Criação de testes na camada models
 
-![Deletar uma venda que não existe](./public/deletarumavendaquenaoexiste.png)
+- Os testes de models estão no arquivo `test/unit/models.js`
 
-### 9 - Atualize a quantidade de produtos
+### 12 - Criação de testes para seus services
 
-- Ao realizar uma venda, atualizá-la ou deletá-la, você deve também atualizar a quantidade do produto em questão presente na `collection` responsável pelos produtos;
+- Os testes de services estarão no arquivo `test/unit/services.js`
 
-- Por exemplo: suponha que haja um produto chamado _Bola de Futebol_ e a sua propriedade `quantity` tenha o valor _10_. Caso seja feita uma venda com _8_ unidades desse produto, a quantidade do produto deve ser atualizada para _2_ , pois 10 - 8 = 2;
+### 13 - Escreva testes para seus controllers
 
-**O que será verificado:**
+- Os testes de controllers estarão no arquivo `test/unit/controllers.js`
 
-- Será validado que é possível a quantidade do produto atualize ao fazer uma compra
+## Rodando o Projeto Localmente
 
-  - Ao fazer uma determinada venda, a quantidade do produto deverá ser atualizada.
+1° `git clone https://github.com/lucasam1992/project-store-manager.git` - Clone o repositório para sua máquina <br />
+2° `cd project-store-manager` - Entre na pasta do repositório clonado <br />
+3° `npm install` - Instale as dependências <br />
+4° `npm start` - Execute o programa <br />
 
-- Será validado que é possível a quantidade do produto atualize ao deletar uma compra
+**Sugestão: Baixe o programa Insomina para executar cada operação do CRUD:
+https://snapcraft.io/install/insomnia/ubuntu
 
-  - Ao fazer deletar uma determinada venda, a quantidade do produto deverá ser atualizada para a quantidade que tinha antes de ter feito essa venda.
+## Autor
 
-### 10 - Valide a quantidade de produtos
-
-- Um produto nunca deve ter a quantidade em estoque menor que 0;
-
-- Quando uma venda for realizada, garanta que a quantidade sendo vendida está disponível no estoque
-
-**O que será verificado:**
-
-- Será validado que o estoque do produto nunca fique com a quantidade menor que zero
-
-  - Um produto não poderá ficar com a quantidade menor que zero, o resultado retornado deverá ser conforme exibido abaixo, com status http `404`:
-
-![Compra maior que a quantidade](./public/compramaiorqueaquantidade.png)
-
-## Bônus
-
-## 11 - Escreva testes para seus models
-
-- Utilize o mocha, chai e sinon para escrever seus testes
-
-- Coloque todos os testes de models no arquivo `test/unit/models.js`
-
-- Será validado que cobertura total das linhas dos arquivos na pasta `models` é maior ou igual a 80%
-
-## 12 - Escreva testes para seus services
-
-- Utilize o mocha, chai e sinon para escrever seus testes
-
-- Coloque todos os testes de services no arquivo `test/unit/services.js`
-
-- Será validado que cobertura total das linhas dos arquivos na pasta `services` é maior ou igual a 80%
-
-## 13 - Escreva testes para seus controllers
-
-- Utilize o mocha, chai e sinon para escrever seus testes
-
-- Coloque todos os testes de controllers no arquivo `test/unit/controllers.js`
-
-- Será validado que cobertura total das linhas dos arquivos na pasta `controllers` é maior ou igual a 80%
-
-
-
+- Lucas Machado
 
