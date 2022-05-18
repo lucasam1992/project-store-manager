@@ -28,12 +28,12 @@ const payloadProduct = {
 describe('Testa endpoints do produto na camada model', () => {
   describe('Testa se está inserindo com sucesso', () => {
     it('retorna um objeto', async () => {
-        const result = await productsModel.create(payloadProduct);
+        const result = await productsModel.create('Produto Silva', 10);
 
         expect(result).to.be.a('object');
     });
     it('verificar se existem os atributos _id, name e quantity', async () => {
-        const result = await productsModel.create(payloadProduct);
+        const result = await productsModel.create('Produto Silva', 10);
 
         expect(result).to.have.a.property('_id');
         expect(result).to.have.a.property('name');
@@ -42,7 +42,7 @@ describe('Testa endpoints do produto na camada model', () => {
   });
   describe('Testa se está pesquisando por id do produto', () => {
     it('retorna um objeto', async () => {
-        const { _id: id } = await productsModel.create(payloadProduct);
+        const { _id: id } = await productsModel.create('Produto Silva', 10);
         const result = await productsModel.getById(id);
 
         expect(result).to.be.a('object');
@@ -58,7 +58,7 @@ describe('Testa endpoints do produto na camada model', () => {
   
   describe('Testa se está atualizando os produtos', () => {
     it('retorna objeto atualizado', async () => {
-       const { _id: id } = await productsModel.create(payloadProduct);
+       const { _id: id } = await productsModel.create('Produto Silva', 10);
       
        await productsModel.update(id, 'Produto Juracy', 25);
       
@@ -71,7 +71,7 @@ describe('Testa endpoints do produto na camada model', () => {
   
   describe('Testa se está removendo os produtos', () => {
     it('retorna vazio caso tenha sido removido da lista', async () => {
-      const { _id: id} = await productsModel.create(payloadProduct);
+      const { _id: id} = await productsModel.create('Produto Silva', 10);
       await productsModel.remove(id);
       
       const resultProductById = await productsModel.getById(id);
@@ -87,14 +87,14 @@ describe('Testa endpoints do produto na camada model', () => {
 describe('Testa endpoints das vendas na camada model', () => {
   describe('Testa se está inserindo com sucesso', () => {
     it('retorna um objeto', async () => {
-        const { _id: id } = await productsModel.create(payloadProduct);
+        const { _id: id } = await productsModel.create('Produto Silva', 10);
         const payloadSale = [{ productId: id, quantity: 3}]
         const result = await salesModel.create(payloadSale);
         
         expect(result).to.be.a('object');
     });
     it('verificar se existem os atributos _id, e itensSold', async () =>{
-        const { _id: id} = await productsModel.create(payloadProduct);
+        const { _id: id} = await productsModel.create('Produto Silva', 10);
         const payloadSale = [{ productId: id, quantity: 3}];
         const result = await salesModel.create(payloadSale);
 
@@ -104,7 +104,7 @@ describe('Testa endpoints das vendas na camada model', () => {
   });
   describe('Testa se está pesquisando por id', () => {
     it('retorna um objeto', async () => {
-      const { _id: id } = await productsModel.create(payloadProduct);
+      const { _id: id } = await productsModel.create('Produto Silva', 10);
       const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);
       const result = await salesModel.getById(saleId);
@@ -112,7 +112,7 @@ describe('Testa endpoints das vendas na camada model', () => {
       expect(result).to.be.a('object');
     });
     it('verificar se existem os atributos _id, e itensSold', async () => {
-      const { _id: id } = await productsModel.create(payloadProduct);
+      const { _id: id } = await productsModel.create('Produto Silva', 10);
       const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);
       const result = await salesModel.getById(saleId);
@@ -131,7 +131,7 @@ describe('Testa endpoints das vendas na camada model', () => {
   describe('Testa se está atualizando os sales', () => {
     it('retorna um objeto atualizado', async () => {
       // Criando product
-      const { _id: id} = await productsModel.create(payloadProduct);
+      const { _id: id} = await productsModel.create('Produto Silva', 10);
       // Criando Sale
       const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);
@@ -147,7 +147,7 @@ describe('Testa endpoints das vendas na camada model', () => {
   describe('Testa se está removendo os sales', () => {
     it('retorna vazio caso tenha sido removido da lista', async () => {
       // Criando product
-      const { _id: id} = await productsModel.create(payloadProduct);
+      const { _id: id} = await productsModel.create('Produto Silva', 10);
       // Criando Sale
       const payloadSale = [{ productId: id, quantity: 3}];
       const { _id: saleId } = await salesModel.create(payloadSale);

@@ -16,7 +16,7 @@ const create = rescue(async (req, res) => {
 const getAll = rescue(async (_req, res) => {
     const products = await productsService.getAll();
 
-    res.status(200).json(products);
+    res.status(200).json({ products });
 });
 
 const getById = rescue(async (req, res) => {
