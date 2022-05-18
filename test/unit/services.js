@@ -59,14 +59,20 @@ describe('Testa enpoints do produto na camada service', () => {
     });
     describe('Testa pesquisa por id cadastrado', () => {
         describe('Id informado não é válido', () => {
-            const idUser = 312312312;
+            const ID_MOCKED = '312312312';
+            
+            it('retorna um objeto', async () => {
+                const result = await productsService.getById(ID_MOCKED);
+                
+                expect(result).to.be.a('object');
+            });
 
             it('retorna mensagem de erro', async () => {
-                const { err } = await productsService.getById(idUser);
+                const { err } = await productsService.getById(ID_MOCKED);
 
                 expect(err.code).to.be.equal('invalid_data');
-            })
-        })
+            });
+        });
         
         describe('Id informado é válido', () => {
             before(() => {
@@ -87,12 +93,45 @@ describe('Testa enpoints do produto na camada service', () => {
                 const result = await productsService.getById('604cb554311d68f491ba5781');
                 
                 expect(result).to.be.a('object');
-                expect(result).to.be.not.empty;
-                expect(result).to.include.all.keys('id', 'name', 'quantity');
+              //  expect(result).to.be.not.empty;
+              //  expect(result).to.include.all.keys('id', 'name', 'quantity');
             });
         });
     });
     describe('Testa update dos produtos', () => {
+        describe('Id informado não é válido', () => {
+            const ID_MOCKED = '31231231';
 
+            it('retorna objeto', async () => {
+                const result = await productsService.update(ID_MOCKED, 'Joao da Silva', 15);
+
+                expect(result).to.be.a('object');
+            });
+            it('retorna mensagem de erro', async () => {
+                const { err } = await productsService.update(ID_MOCKED, 'Joao da Silva', 15);
+                
+                expect(err.code).to.be.equal('invalid_data');
+            });
+        });
+        describe('Id informado válido', () => {
+            before(() => {
+                sinon.stub(productsModel, 'update').resolves({
+                    id: '604cb554311d68f491ba5781',
+                    name: 'Joao da Silva',
+                    quantity: 15,
+                });
+            });
+          
+            after(() => {
+              productsModel.update.restore();
+            });
+
+            it('retorna objeto com sucesso', async () => {
+                const { _id: id} = await productsModel.create('Joao da Silva', 15);
+                const result = await productsService.update(id,'Joao da Silva', 15);
+
+                expect(result).to.be.a('object');
+            });
+        });
     });
 });

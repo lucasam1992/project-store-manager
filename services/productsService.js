@@ -31,10 +31,12 @@ const getById = async (id) => {
 };
 
 const update = async (id, name, quantity) => {
+    const productId = await productSchema.validateProductDoesntExistId(id);
     const productLength = productSchema.validateProductLength(name);
     const quantityMoreZero = productSchema.validateQuantityMoreZero(quantity);
     const quantityIsNumber = productSchema.validateQuantityIsNumber(quantity);
 
+    if (productId) { return productId; }
     if (productLength) { return productLength; }
     if (quantityMoreZero) { return quantityMoreZero; }
     if (quantityIsNumber) { return quantityIsNumber; }
