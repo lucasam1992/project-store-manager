@@ -134,4 +134,42 @@ describe('Testa enpoints do produto na camada service', () => {
             });
         });
     });
+    describe('Teste remoção dos produtos', () => {
+        describe('Id informado não é válido', () => {
+            const ID_MOCKED = '31231231';
+
+            it('retorna objeto', async () => {
+                const result = await productsService.remove(ID_MOCKED);
+
+                expect(result).to.be.a('object');
+            });
+
+            it('retorna mensagem de erro', async () => {
+                const { err } = await productsService.remove(ID_MOCKED);
+
+                expect(err.code).to.be.equal('invalid_data');
+            });
+        });
+        describe('Id informado válido', () => {
+            before(() => {
+                sinon.stub(productsModel, 'remove').resolves({
+                    id: '604cb554311d68f491ba5781',
+                    name: 'Joao da Silva',
+                    quantity: 15,
+                });
+            });
+          
+            after(() => {
+              productsModel.remove.restore();
+            });
+
+            it('retorna objeto com sucesso', async () => {
+                const { _id: id} = await productsModel.create('Joao da Silva', 15);
+                const result = await productsService.remove(id);
+
+                expect(result).to.be.a('object');
+            });
+        });
+    });
 });
+
