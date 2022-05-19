@@ -208,7 +208,7 @@ describe('Testa enpoints da venda na camada service', () => {
     });
 
     describe('Testa pesquisa de todas as vendas', () => {
-        it('Retorna um array', async () => {
+        it('Retorna um objeto', async () => {
             const result = await salesService.getAll();
 
             expect(result).to.be.a('object');
