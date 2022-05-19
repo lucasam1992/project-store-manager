@@ -19,6 +19,7 @@ const create = async (itensSold) => {
 
 const getAll = async () => {
     const sales = await salesModel.getAll();
+
     return { sales };
 };
 

@@ -86,9 +86,10 @@ describe('Testa enpoints do produto na camada service', () => {
                   );
               });
           
-              after(() => {
-                productsModel.getById.restore();
-              })
+            after(() => {
+              productsModel.getById.restore();
+            });
+            
             it('retorna objeto com sucesso', async () => {
                 const result = await productsService.getById('604cb554311d68f491ba5781');
                 
@@ -114,18 +115,6 @@ describe('Testa enpoints do produto na camada service', () => {
             });
         });
         describe('Id informado válido', () => {
-            before(() => {
-                sinon.stub(productsModel, 'update').resolves({
-                    id: '604cb554311d68f491ba5781',
-                    name: 'Joao da Silva',
-                    quantity: 15,
-                });
-            });
-          
-            after(() => {
-              productsModel.update.restore();
-            });
-
             it('retorna objeto com sucesso', async () => {
                 const { _id: id} = await productsModel.create('Joao da Silva', 15);
                 const result = await productsService.update(id,'Joao da Silva', 15);
@@ -151,18 +140,6 @@ describe('Testa enpoints do produto na camada service', () => {
             });
         });
         describe('Id informado válido', () => {
-            before(() => {
-                sinon.stub(productsModel, 'remove').resolves({
-                    id: '604cb554311d68f491ba5781',
-                    name: 'Joao da Silva',
-                    quantity: 15,
-                });
-            });
-          
-            after(() => {
-              productsModel.remove.restore();
-            });
-
             it('retorna objeto com sucesso', async () => {
                 const { _id: id} = await productsModel.create('Joao da Silva', 15);
                 const result = await productsService.remove(id);
@@ -173,3 +150,68 @@ describe('Testa enpoints do produto na camada service', () => {
     });
 });
 
+
+// Testando sales
+
+describe('Testa enpoints da venda na camada service', () => {
+    describe('Testa insercao de vendas', () => {
+        describe('Payload informado não é válido', () => {
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+
+            it('retorna um objeto', async () => {
+                const result = await salesService.create(itensSold);
+
+                expect(result).to.be.a('object');
+            });
+            it('retorna uma mensagem de erro', async () => {
+                const { err } = await salesService.create(itensSold);
+
+                expect(err.code).to.be.equal('stock_problem');
+            });
+        });
+        describe('Payload informado válido - inserido com sucesso', () => {
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 6,
+            }];
+
+            before(() => {
+                sinon.stub(productsModel, 'getById')
+                .resolves(
+                  {
+                    id: '604cb554311d68f491ba5781',
+                    name: 'Serra Eletrica do Louco',
+                    quantity: 19,
+                  }
+                );
+            });
+        
+          after(() => {
+            productsModel.getById.restore();
+          });
+            
+            it('retorna um objeto', async () => {
+                const result = await salesService.create(itensSold);
+                
+                expect(result).to.be.a('object');
+            });
+
+            it('o objeto possui um id válido', async () => {
+                const { _id: id} = await salesService.create(itensSold);
+
+                expect(id).to.have.a.property('id');
+            });
+        });
+    });
+
+    describe('Testa pesquisa de todas as vendas', () => {
+        it('Retorna um array', async () => {
+            const result = await salesService.getAll();
+
+            expect(result).to.be.a('object');
+        });      
+    });
+});

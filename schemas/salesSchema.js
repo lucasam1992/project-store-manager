@@ -13,11 +13,14 @@ const codeNotFound = 'not_found';
 const codeErrorStock = 'stock_problem';
 
 const validateQuantity = (itensSold) => {
+  //  console.log(itensSold[0].quantity);
+   /*
     const quantityVerified = itensSold.find((item) => 
                              item.quantity <= 0 
                              || typeof item.quantity !== 'number');
+    */
 
-    if (quantityVerified) {
+    if (itensSold[0].quantity <= 0 || typeof itensSold[0].quantity !== 'number') {
            return { err: {
                code: codeError,
                message: errors.quantityErrorValue,
@@ -52,12 +55,12 @@ const validateSaleIdRemove = async (id) => {
 // Requisito 9 = Atualizar a quantidade de produtos
 
 const sumProductQuantity = async (itensSold) => {
-    const existingSale = itensSold.find((item) => item);
+    const existingSale = itensSold[0];
     
     const listSale = await productsModel.getById(existingSale.productId);
 
- //   console.log(existingSale.productId);
- //   console.log(listSale); 
+//    console.log(existingSale);
+//    console.log(listSale); 
     const setQuantity = listSale.quantity - existingSale.quantity;
 
     return productsModel.update(existingSale.productId, listSale.name, setQuantity);
@@ -79,11 +82,11 @@ const subProductQuantity = async (id) => {
 // Requisito 10: Validando a quantidade de produtos
 
 const validateStockQuantity = async (itensSold) => {
-    const existingSale = itensSold.find((item) => item);
+    const existingSale = itensSold[0];
     
     const listSale = await productsModel.getAll();
 
-    const getListSale = listSale.find((sale) => sale);
+    const getListSale = listSale[0];
     
    // console.log(existingSale);
 
