@@ -12,7 +12,7 @@ describe('Testa enpoints do produto na camada controller', () => {
         describe('quando payload informado não é válido', () => {
             const response = {};
             const request = {};
-            const mockProducts = { body: {name: 'Chapéu de Cobra', quantity: 15} };
+            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };
             const messageError = { err: { message: 'invalid_data' }};
 
             before(() => {
@@ -43,7 +43,7 @@ describe('Testa enpoints do produto na camada controller', () => {
         describe('Quando payload informado é válido', () => {
             const response = {};
             const request = {};
-            const mockProducts = { body: {name: 'Chapéu de Cobra', quantity: 15} };
+            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };
 
             before(() => {
                 request.body = { mockProducts };
@@ -70,6 +70,39 @@ describe('Testa enpoints do produto na camada controller', () => {
                 expect(response.json.calledWith(mockProducts)).to.be.equal(true);
             }); 
 
+        });
+    });
+
+    describe('Testa busca por todos os produtos', () => {
+        describe('retorna confirmação positiva', () => {
+            const request = {};
+            const response = {};
+            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };;
+
+            before(() => {
+                request.body = { mockProducts };
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+
+                sinon.stub(productsService, 'getAll').resolves(mockProducts);
+            });
+
+            after(() => {
+                productsService.getAll.restore();
+            });
+
+            it('é chamado o status com o código 200', async () => {
+                await productsController.getAll(request, response, () => {});
+
+                expect(response.status.calledWith(200)).to.be.equal(true);
+            });
+
+            it('retorna array', async () => {
+                await productsController.create(request, response, () => {});
+
+                expect(response.json.calledWith({products: mockProducts})).to.be.equal(true);
+            });
         });
     });
 });
