@@ -180,7 +180,7 @@ describe('Testa enpoints do produto na camada controller', () => {
             before(() => {
                 request.params = {ID_MOCKED};
                 request.body = {mockProducts};
-                
+
                 response.status = sinon.stub().returns(response);
                 response.json = sinon.stub().returns();
                 
@@ -204,7 +204,36 @@ describe('Testa enpoints do produto na camada controller', () => {
                 expect(response.json.calledWith(messageError)).to.be.equal(true);
             });
         });
-        describe('quando id informado é válido', () => {});
+        describe('quando id informado é válido', () => {
+            const request = {};
+            const response = {};
+            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };
+            const ID_MOCKED = '604cb554311d68f491ba5781';
+
+            before(() => {
+                request.params = {ID_MOCKED};
+                request.body = {mockProducts};
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+                
+                sinon.stub(productsService, 'update').resolves(mockProducts);
+            });
+
+            after(() => {
+                productsService.update.restore();
+            });
+            it('é chamado o status com o código 200', async () => {
+                await productsController.update(request, response, () => {});
+
+                expect(response.json.calledWith(mockProducts)).to.be.equal(true);
+            });
+            it('retorna um array', async () => {
+                await productsController.update(request, response, () => {});
+
+                expect(response.json.calledWith(mockProducts)).to.be.equal(true);
+            });
+        });
     });
 });
 
