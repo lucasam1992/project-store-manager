@@ -198,7 +198,7 @@ describe('Testa enpoints do produto na camada controller', () => {
 
                 expect(response.json.calledWith(messageError)).to.be.equal(true);
             });
-            it('retorna objeto', async () => {
+            it('é chamado json com a mensagem de erro genérica', async () => {
                 await productsController.update(request, response, () => {});
 
                 expect(response.json.calledWith(messageError)).to.be.equal(true);
@@ -230,6 +230,68 @@ describe('Testa enpoints do produto na camada controller', () => {
             });
             it('retorna um array', async () => {
                 await productsController.update(request, response, () => {});
+
+                expect(response.json.calledWith(mockProducts)).to.be.equal(true);
+            });
+        });
+    });
+    describe('Testa a remoção de produtos', () => {
+        describe('quando id informado não é válido', () => {
+            const request = {};
+            const response = {};
+            const ID_MOCKED = '123123';
+            const messageError = { err: { message: 'invalid_data' }};
+
+            before(() => {
+                request.params = { ID_MOCKED };
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+                
+                sinon.stub(productsService, 'remove').resolves(messageError);
+            });
+
+            after(() => {
+                productsService.remove.restore();
+            });
+
+            it('é chamado status com o código 422', async () => {
+                await productsController.remove(request, response, () => {});
+
+                expect(response.json.calledWith(messageError)).to.be.equal(true);
+            });
+            it('é chamado json com a mensagem de erro genérica', async () => {
+                await productsController.remove(request, response, () => {});
+
+                expect(response.json.calledWith(messageError)).to.be.equal(true);                
+            });
+        });
+        describe('quando id informado é válido', () => {
+            const request = {};
+            const response = {};
+            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };
+            const ID_MOCKED = '604cb554311d68f491ba5781';
+
+            before(() => {
+                request.params = { ID_MOCKED };
+
+                response.status = sinon.stub().returns(response); 
+                response.json = sinon.stub().returns();
+
+                sinon.stub(productsService, 'remove').resolves(mockProducts);
+            });
+
+            after(() => {
+                productsService.remove.restore();
+            });
+
+            it('é chamado o status com o código 200', async () => {
+                await productsController.remove(request, response, () => {});
+
+                expect(response.json.calledWith(mockProducts)).to.be.equal(true);
+            });
+            it('retorna objeto', async () => {
+                await productsController.remove(request, response, () => {});
 
                 expect(response.json.calledWith(mockProducts)).to.be.equal(true);
             });
