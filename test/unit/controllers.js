@@ -169,6 +169,43 @@ describe('Testa enpoints do produto na camada controller', () => {
             });
         });
     });
+    describe('Testa update de produtos', () => {
+        describe('quando id informado não é válido', () => {
+            const request = {};
+            const response = {};
+            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };
+            const messageError = { err: { message: 'invalid_data' }};
+            const ID_MOCKED = '1233377';
+
+            before(() => {
+                request.params = {ID_MOCKED};
+                request.body = {mockProducts};
+                
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+                
+                sinon.stub(productsService, 'update').resolves(messageError);
+            });
+
+            after(() => {
+                productsService.update.restore();
+            });
+
+
+
+            it('é chamado o status com o código 422', async () => {
+                await productsController.update(request, response, () => {});
+
+                expect(response.json.calledWith(messageError)).to.be.equal(true);
+            });
+            it('retorna objeto', async () => {
+                await productsController.update(request, response, () => {});
+
+                expect(response.json.calledWith(messageError)).to.be.equal(true);
+            });
+        });
+        describe('quando id informado é válido', () => {});
+    });
 });
 
 
