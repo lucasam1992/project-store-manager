@@ -116,7 +116,7 @@ describe('Testa enpoints do produto na camada service', () => {
         });
         describe('Id informado válido', () => {
             it('retorna objeto com sucesso', async () => {
-                const { _id: id} = await productsModel.create('Joao da Silva', 15);
+                const { _id: id} = await productsService.create('Joao da Silva', 15);
                 const result = await productsService.update(id,'Joao da Silva', 15);
 
                 expect(result).to.be.a('object');
@@ -213,5 +213,36 @@ describe('Testa enpoints da venda na camada service', () => {
 
             expect(result).to.be.a('object');
         });      
+    });
+
+    describe('Teste remoção das vendas', () => {
+        describe('Id informado não é válido', () => {
+            const ID_MOCKED = '31231231';
+
+            it('retorna objeto', async () => {
+                const result = await salesService.remove(ID_MOCKED);
+
+                expect(result).to.be.a('object');
+            });
+
+            it('retorna mensagem de erro', async () => {
+                const { err } = await salesService.remove(ID_MOCKED);
+
+                expect(err.code).to.be.equal('invalid_data');
+            });
+        });
+        describe('Id informado válido', () => {
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+
+            it('retorna objeto com sucesso', async () => {
+                const { _id: id} = await salesService.create(itensSold);
+                const result = await salesService.remove(id);
+
+                expect(result).to.be.a('object');
+            });
+        });
     });
 });
