@@ -118,7 +118,7 @@ describe('Testa enpoints do produto na camada service', () => {
             it('retorna objeto com sucesso', async () => {
                 const { _id: id} = await productsService.create('Joao da Silva', 15);
                 const result = await productsService.update(id,'Joao da Silva', 12);
-              
+    
                 expect(result).to.be.a('object');
             });
         });
