@@ -402,4 +402,40 @@ describe('Testa enpoints da venda na camada controller', () => {
 
         });
     });
+
+    describe('Testa busca por todos as vendas', () => {
+        describe('retorna confirmação positiva', () => {
+            const request = {};
+            const response = {};
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+
+            before(() => {
+                request.body = { itensSold };
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+
+                sinon.stub(salesService, 'getAll').resolves(itensSold);
+            });
+
+            after(() => {
+                salesService.getAll.restore();
+            });
+
+            it('é chamado o status com o código 200', async () => {
+                await salesController.getAll(request, response, () => {});
+
+                expect(response.status.calledWith(200)).to.be.equal(true);
+            });
+
+            it('retorna array', async () => {
+                await salesController.create(request, response, () => {});
+
+                expect(response.json.calledWith(itensSold)).to.be.equal(true);
+            });
+        });
+    });
 });
