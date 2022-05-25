@@ -215,6 +215,54 @@ describe('Testa enpoints da venda na camada service', () => {
         });      
     });
 
+    describe('Testa pesquisa por id cadastrado', () => {
+        describe('Id informado não é válido', () => {
+            const ID_MOCKED = '604cb554311d68f491ba5781';
+            
+            it('retorna um objeto', async () => {
+                const result = await salesService.getById(ID_MOCKED);
+
+                expect(result).to.be.a('object');
+            });
+
+            it('retorna mensagem de erro', async () => {
+                const { err } = await salesService.getById(ID_MOCKED);
+
+                expect(err.code).to.be.equal('not_found');
+            });
+        });
+        /*
+        describe('Id informado é válido', () => {
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 12,
+            }];
+
+            const ID_MOCKED = '604cb554311d68f491ba5785';
+
+            before(() => {
+                sinon.stub(salesModel, 'getById')
+                  .resolves({
+                    ID_MOCKED,
+                    itensSold
+                   });
+              });
+          
+            after(() => {
+              salesModel.getById.restore();
+            });
+            
+            it('retorna venda com sucesso conforme id', async () => {
+                const result = await salesService.getById(ID_MOCKED);
+                
+                console.log(result);
+                expect(result).to.be.deep.equal({_id:  ID_MOCKED, itensSold});
+                //expect(result).to.be.a('object');
+            });
+        });
+        */
+    });
+
     describe('Testa update das vendas', () => {
         describe('Id informado não é válido', () => {
             const itensSold = [{
@@ -291,6 +339,7 @@ describe('Testa enpoints da venda na camada service', () => {
                 expect(err.code).to.be.equal('invalid_data');
             });
         });
+        /*
         describe('Id informado válido', () => {
             const itensSold = [{
                 productId: '604cb554311d68f491ba5781',
@@ -300,9 +349,10 @@ describe('Testa enpoints da venda na camada service', () => {
             it('retorna objeto com sucesso', async () => {
                 const { _id: id} = await salesService.create(itensSold);
                 const result = await salesService.remove(id);
-
+                console.log(result);
                 expect(result).to.be.a('object');
             });
         });
+        */
     });
 });
