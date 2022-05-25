@@ -70,19 +70,19 @@ O projeto consiste em uma API que realiza um CRUD (Create, Read, Update e Delete
 
 ![Deletar uma venda com sucesso](./public/deletarumavendacomsucesso.png)
 
-## O que está em desenvolvimento
+## Criação de Testes 
 
-### 11 - Criação de testes na camada models
+### Testes na camada models
 
 - Os testes de models estão no arquivo `test/unit/models.js`
 
-### 12 - Criação de testes para seus services
+### Testes para seus services
 
-- Os testes de services estarão no arquivo `test/unit/services.js`
+- Os testes de services estão no arquivo `test/unit/services.js`
 
-### 13 - Escreva testes para seus controllers
+### Testes para seus controllers
 
-- Os testes de controllers estarão no arquivo `test/unit/controllers.js`
+- Os testes de controllers estão no arquivo `test/unit/controllers.js`
 
 ## Rodando o Projeto Localmente
 
