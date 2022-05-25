@@ -301,7 +301,7 @@ describe('Testa enpoints do produto na camada controller', () => {
 
 
 // Testando sales
-/*
+
 describe('Testa enpoints da venda na camada controller', () => {
     describe('Testa inserção de vendas', () => {
         describe('quando payload informado não é válido', () => {
@@ -319,56 +319,87 @@ describe('Testa enpoints da venda na camada controller', () => {
                 response.status = sinon.stub().returns(response);
                 response.json = sinon.stub().returns();
 
-                sinon.stub(productsService, 'create').resolves( messageError );
+                sinon.stub(salesService, 'create').resolves( messageError );
             });
 
             after(() => {
-                productsService.create.restore();
+                salesService.create.restore();
             });
 
             it('é chamado o status com o código 422', async () => {
-                await productsController.create(request, response, () => {});
+                await salesController.create(request, response, () => {});
 
                 expect(response.status.calledWith(422)).to.be.equal(true);
                 
             });
             it('é chamado json com a mensagem de erro genérica', async () => {
-                await productsController.create(request, response, () => {});
+                await salesController.create(request, response, () => {});
 
                 expect(response.json.calledWith(messageError)).to.be.equal(true);
             });
         });
-        describe('Quando payload informado é válido', () => {
+        
+        describe('quando há problema de estoque', () => {
             const response = {};
             const request = {};
-            const mockProducts = { products: [{name: 'Chapéu de Cobra', quantity: 15}] };
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+            const messageError = { err: { code: 'stock_problem' , message: 'invalid_data' }};
 
             before(() => {
-                request.body = { mockProducts };
+                request.body = { itensSold };
 
                 response.status = sinon.stub().returns(response);
                 response.json = sinon.stub().returns();
 
-                sinon.stub(productsService, 'create').resolves(mockProducts);
+                sinon.stub(salesService, 'create').resolves( messageError );
             });
 
             after(() => {
-                productsService.create.restore();
+                salesService.create.restore();
             });
 
-            it('é chamado o status com o código 201', async () => {
-                await productsController.create(request, response, () => {});
+            it('é chamado o status com o código 404', async () => {
+                await salesController.create(request, response, () => {});
 
-                expect(response.status.calledWith(201)).to.be.equal(true);
+                expect(response.status.calledWith(404)).to.be.equal(true);
+            });
+        });
+
+        describe('quando payload informado é válido', () => {
+            const response = {};
+            const request = {};
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+            before(() => {
+                request.body = { itensSold };
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+
+                sinon.stub(salesService, 'create').resolves(itensSold);
+            });
+
+            after(() => {
+                salesService.create.restore();
+            });
+
+            it('é chamado o status com o código 200', async () => {
+                await salesController.create(request, response, () => {});
+
+                expect(response.status.calledWith(200)).to.be.equal(true);
             });
 
             it('retorna objeto', async () => {
-                await productsController.create(request, response, () => {});
+                await salesController.create(request, response, () => {});
 
-                expect(response.json.calledWith(mockProducts)).to.be.equal(true);
+                expect(response.json.calledWith(itensSold)).to.be.equal(true);
             }); 
 
         });
     });
 });
-*/
