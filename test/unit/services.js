@@ -117,8 +117,8 @@ describe('Testa enpoints do produto na camada service', () => {
         describe('Id informado válido', () => {
             it('retorna objeto com sucesso', async () => {
                 const { _id: id} = await productsService.create('Joao da Silva', 15);
-                const result = await productsService.update(id,'Joao da Silva', 15);
-
+                const result = await productsService.update(id,'Joao da Silva', 12);
+              
                 expect(result).to.be.a('object');
             });
         });
@@ -213,6 +213,66 @@ describe('Testa enpoints da venda na camada service', () => {
 
             expect(result).to.be.a('object');
         });      
+    });
+
+    describe('Testa update das vendas', () => {
+        describe('Id informado não é válido', () => {
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 20,
+            }];
+            const ID_MOCKED = '0';
+            const messageError = { err: { message: 'invalid_data' }};
+
+            before(() => {
+                sinon.stub(salesModel, 'update').resolves(messageError);
+            });
+
+            after(() => {
+                salesModel.update.restore();
+            });
+
+            it('retorna objeto', async () => {
+                const result = await salesService.update(ID_MOCKED, itensSold);
+
+                expect(result).to.be.a('object');
+            });
+            it('retorna mensagem de erro', async () => {
+                const result = await salesService.update(ID_MOCKED, itensSold);
+                
+                expect(result.err.message).to.be.equal('invalid_data');
+            });
+        });
+        describe('Id informado válido', () => {
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 20,
+            }];
+            const ID_MOCKED = '604cb554311d68f491ba5783';
+
+            before(() => {
+                sinon.stub(salesModel, 'update').resolves({
+                    _id: ID_MOCKED,
+                    itensSold,
+                });
+            });
+
+            after(() => {
+                salesModel.update.restore();
+            });
+
+            it('retorna objeto com sucesso', async () => {
+                const result = await salesService.update(ID_MOCKED, itensSold);
+
+                expect(result).to.be.a('object');
+            });
+
+            it('retorna a venda alterada com sucesso', async () => {
+                const result = await salesService.update(ID_MOCKED, itensSold);
+
+                expect(result).to.be.deep.equal({ _id: ID_MOCKED, itensSold });
+            });
+        });
     });
 
     describe('Teste remoção das vendas', () => {
