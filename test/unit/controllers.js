@@ -506,4 +506,143 @@ describe('Testa enpoints da venda na camada controller', () => {
             });
         });
     });
+    describe('Testa update das vendas', () => {
+        describe('quando id informado não é válido', () => {
+            const request = {};
+            const response = {};
+            const  itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+
+            const messageError = { err: { message: 'invalid_data' }};
+            const ID_MOCKED = '1233377';
+
+            before(() => {
+                request.params = {ID_MOCKED};
+                request.body = {itensSold};
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+                
+                sinon.stub(salesService, 'update').resolves(messageError);
+            });
+
+            after(() => {
+                salesService.update.restore();
+            });
+
+
+
+            it('é chamado o status com o código 422', async () => {
+                await salesController.update(request, response, () => {});
+
+                expect(response.status.calledWith(422)).to.be.equal(true);
+            });
+            it('é chamado json com a mensagem de erro genérica', async () => {
+                await salesController.update(request, response, () => {});
+
+                expect(response.json.calledWith(messageError)).to.be.equal(true);
+            });
+        });
+        describe('quando id informado é válido', () => {
+            const request = {};
+            const response = {};
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+
+            const ID_MOCKED = '604cb554311d68f491ba5781';
+
+            before(() => {
+                request.params = {ID_MOCKED};
+                request.body = {itensSold};
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+                
+                sinon.stub(salesService, 'update').resolves(itensSold);
+            });
+
+            after(() => {
+                salesService.update.restore();
+            });
+            it('é chamado o status com o código 200', async () => {
+                await salesController.update(request, response, () => {});
+
+                expect(response.status.calledWith(200)).to.be.equal(true);
+            });
+            it('retorna um array', async () => {
+                await salesController.update(request, response, () => {});
+
+                expect(response.json.calledWith(itensSold)).to.be.equal(true);
+            });
+        });
+    });
+    describe('Testa a remoção das vendas', () => {
+        describe('quando id informado não é válido', () => {
+            const request = {};
+            const response = {};
+            const ID_MOCKED = '123123';
+            const messageError = { err: { message: 'invalid_data' }};
+
+            before(() => {
+                request.params = { ID_MOCKED };
+
+                response.status = sinon.stub().returns(response);
+                response.json = sinon.stub().returns();
+                
+                sinon.stub(salesService, 'remove').resolves(messageError);
+            });
+
+            after(() => {
+                salesService.remove.restore();
+            });
+
+            it('é chamado status com o código 422', async () => {
+                await salesController.remove(request, response, () => {});
+
+                expect(response.status.calledWith(422)).to.be.equal(true);
+            });
+            it('é chamado json com a mensagem de erro genérica', async () => {
+                await salesController.remove(request, response, () => {});
+
+                expect(response.json.calledWith(messageError)).to.be.equal(true);                
+            });
+        });
+        describe('quando id informado é válido', () => {
+            const request = {};
+            const response = {};
+            const itensSold = [{
+                productId: '604cb554311d68f491ba5781',
+                quantity: 15,
+            }];
+            const ID_MOCKED = '604cb554311d68f491ba5781';
+
+            before(() => {
+                request.params = { ID_MOCKED };
+
+                response.status = sinon.stub().returns(response); 
+                response.json = sinon.stub().returns();
+
+                sinon.stub(salesService, 'remove').resolves(itensSold);
+            });
+
+            after(() => {
+                salesService.remove.restore();
+            });
+
+            it('é chamado o status com o código 200', async () => {
+                await salesController.remove(request, response, () => {});
+
+                expect(response.status.calledWith(200)).to.be.equal(true);
+            });
+            it('retorna objeto', async () => {
+                await salesController.remove(request, response, () => {});
+
+                expect(response.json.calledWith(itensSold)).to.be.equal(true);
+            });
+        });
+    });
 });
